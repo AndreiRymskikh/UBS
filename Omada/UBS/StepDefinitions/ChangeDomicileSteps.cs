@@ -14,9 +14,9 @@ namespace UBS.StepDefinitions
         }
         
         [When(@"domiciles choosen (.*), (.*)")]
-        public void WhenDomicilesChoosen(string continent, string country)
+        public void WhenDomicilesChoosen(string region, string country)
         {
-            new HomePage(driver).SelectDomiciles(continent, country);
+            new HomePage(driver).SelectDomiciles(region, country);
         }
 
         [Then(@"I can read (.*) info about the company")]

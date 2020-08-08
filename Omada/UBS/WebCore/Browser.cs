@@ -6,7 +6,6 @@ using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.Reflection;
 using OpenQA.Selenium.Support.UI;
-using System.Threading;
 
 namespace UBS.WebCore
 {

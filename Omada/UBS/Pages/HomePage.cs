@@ -13,6 +13,8 @@ namespace UBS.Pages
         public By RegionItem => By.XPath("//ul[contains(@class, 'list--region')]/li");
         public By CountryDropDown => By.XPath("//li[contains(@class, 'item--country')]/ul/preceding-sibling::button");
         public By CountryItem => By.XPath("//li[contains(@class, 'item--country')]/ul/li");
+        public By NavDropDown(string text) => By.XPath($"//button[contains(text(), '{text}')]");
+        public By NavItem(string text) => By.XPath($"//ul//li/a[text() = '{text}']");
 
         public HomePage(IWebDriver driver) : base(driver) { }
 
@@ -39,6 +41,15 @@ namespace UBS.Pages
 
             SelectValueFromDropDown(region, RegionDropDown, RegionItem);
             SelectValueFromDropDown(country, CountryDropDown, CountryItem);
+        }
+
+        public void SelectNavMenu(string navButton, string navItem)
+        {
+            var global = driver.FindElement(SelectDomicileButton);
+            global.Click();
+            new Browser(driver).WaitForElementClickable(RegionDropDown);
+
+            SelectValueFromDropDown(navItem, NavDropDown(navButton), NavItem(navItem));
         }
 
         public bool IsTitleDisplayed(string text)

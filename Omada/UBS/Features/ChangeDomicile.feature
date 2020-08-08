@@ -3,12 +3,12 @@
 	As a potential Customer
 	I want to change domiciles and read info about the company
 
-Scenario: Add two numbers
+Scenario: Change Domicile and check that pages opened as expected
 	Given Home Page opened
-	When domiciles choosen <continent>, <country>
+	When domiciles choosen <region>, <country>
 	Then I can read <title> info about the company
 
 	Examples:
-	 | continent     | country | title   |
+	 | region        | country | title   |
 	 | Europe        | Austria | Austria |
-	 | North America | Canada  | Canada        |
+	 | North America | Canada  | Canada  |
