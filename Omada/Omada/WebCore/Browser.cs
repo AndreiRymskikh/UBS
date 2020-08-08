@@ -4,10 +4,9 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using Microsoft.Extensions.Configuration;
 using System.IO;
-using Microsoft.Extensions.Configuration.Json;
 using System.Reflection;
 
-namespace Omada.WebCore
+namespace UBS.WebCore
 {
     internal class Browser
     {
@@ -52,10 +51,11 @@ namespace Omada.WebCore
                 default:
                     throw new Exception("Browser was not initialized");
             }
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
         }
+
         public void goToPage(string url)
         {
-
             driver.Navigate().GoToUrl(url);
         }
     }

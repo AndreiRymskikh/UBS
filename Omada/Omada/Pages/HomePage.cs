@@ -4,27 +4,23 @@ using OpenQA.Selenium.Support.UI;
 using System;
 using System.Linq;
 
-namespace Omada.Pages
+namespace UBS.Pages
 {
-    class CareersPage
+    public class HomePage : BasePage
     {
-        private IWebDriver driver;
-        private By GlobalLocator => By.XPath("//li/a[text()='GLOBAL']");
+        private By LocationsNavButton => By.XPath("//ul[@id = 'metanavigation']//a[contains(text(), 'Locations')]");
         private By RomanialLocator => By.XPath("//li/a[text()='ROMANIA']");
         private By ShowAllJobsButtonLocator => By.CssSelector("a.content-loader-button.load-more-button");
         private By ViewOpenPositionsButtonLocator => By.CssSelector("a.mSubmit.mForm__btn-green");
         private By VacancyBlockLocator => By.CssSelector("a.vacancies-blocks-item-header.ability-link");
         public By LanguageDropDown => By.XPath("//select[@name = 'language']");
 
-        public CareersPage(IWebDriver driver)
-        {
-            this.driver = driver;
-        }
+        public HomePage(IWebDriver driver) : base(driver) { }
 
-        public void ClickGlobal()
+        public void ClickLocationsNavButton()
         {
-           var global = driver.FindElement(GlobalLocator);
-           global.Click();
+            var global = driver.FindElement(LocationsNavButton);
+            global.Click();
         }
 
         public void ClickRomania()

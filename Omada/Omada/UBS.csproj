@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="gherkin" Version="6.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.6" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="3.1.6" />
     <PackageReference Include="nunit" Version="3.12.0" />
@@ -14,6 +15,9 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.4.0" />
     <PackageReference Include="Selenium.Support" Version="3.141.0" />
     <PackageReference Include="Selenium.WebDriver" Version="3.141.0" />
+    <PackageReference Include="SpecFlow" Version="3.3.74" />
+    <PackageReference Include="SpecFlow.NUnit" Version="3.3.74" />
+    <PackageReference Include="SpecFlow.NUnit.Runners" Version="3.3.74" />
   </ItemGroup>
 
 </Project>
