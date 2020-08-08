@@ -1,19 +1,18 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.Extensions;
-using OpenQA.Selenium.Support.UI;
-using System;
-using System.Linq;
+using UBS.WebCore;
 
 namespace UBS.Pages
 {
     public class HomePage : BasePage
     {
         private By LocationsNavButton => By.XPath("//ul[@id = 'metanavigation']//a[contains(text(), 'Locations')]");
-        private By RomanialLocator => By.XPath("//li/a[text()='ROMANIA']");
-        private By ShowAllJobsButtonLocator => By.CssSelector("a.content-loader-button.load-more-button");
-        private By ViewOpenPositionsButtonLocator => By.CssSelector("a.mSubmit.mForm__btn-green");
-        private By VacancyBlockLocator => By.CssSelector("a.vacancies-blocks-item-header.ability-link");
-        public By LanguageDropDown => By.XPath("//select[@name = 'language']");
+        private By AgreeToAllButton => By.XPath("//button//*[text() = 'Agree to all']");
+        private By SelectDomicileButton => By.CssSelector("#domicileButton");
+        private By Title(string text) => By.XPath($"//div[@class = 'header__title']//span[text() = '{text}']");
+        public By RegionDropDown => By.XPath("//ul[contains(@class, 'list--region')]/preceding-sibling::button");
+        public By RegionItem => By.XPath("//ul[contains(@class, 'list--region')]/li");
+        public By CountryDropDown => By.XPath("//li[contains(@class, 'item--country')]/ul/preceding-sibling::button");
+        public By CountryItem => By.XPath("//li[contains(@class, 'item--country')]/ul/li");
 
         public HomePage(IWebDriver driver) : base(driver) { }
 
@@ -23,32 +22,28 @@ namespace UBS.Pages
             global.Click();
         }
 
-        public void ClickRomania()
+        public void ClickAgryToAllButton()
         {
-            var romania = driver.FindElement(RomanialLocator);
-            romania.Click();
+            driver.SwitchTo().Frame(0);
+            var agryToAllButton = driver.FindElement(AgreeToAllButton);
+            agryToAllButton.Click();
+            new Browser(driver).WaitForElementInvisible(AgreeToAllButton);
+            driver.SwitchTo().DefaultContent();
         }
 
-        public void ClickShowAllJobsButton()
+        public void SelectDomiciles(string region, string country)
         {
-            new WebDriverWait(driver, TimeSpan.FromSeconds(15)).Until(
-                     ExpectedConditions.ElementExists(ShowAllJobsButtonLocator));
-            var btn = driver.FindElement(ShowAllJobsButtonLocator);
-            driver.ExecuteJavaScript<object>("arguments[0].scrollIntoView(true);", btn);
-            btn.Click();
+            var global = driver.FindElement(SelectDomicileButton);
+            global.Click();
+            new Browser(driver).WaitForElementClickable(RegionDropDown);
+
+            SelectValueFromDropDown(region, RegionDropDown, RegionItem);
+            SelectValueFromDropDown(country, CountryDropDown, CountryItem);
         }
 
-        public void ClickViewOpenPositionsButton()
-        {     
-            var btn = driver.FindElement(ViewOpenPositionsButtonLocator);
-            btn.Click();
-            driver.SwitchTo().Window(driver.WindowHandles.Last());
-        }
-
-        public int CountVacancies()
+        public bool IsTitleDisplayed(string text)
         {
-            var vacancies = driver.FindElements(VacancyBlockLocator);
-            return vacancies.Count;
+            return driver.FindElement(Title(text)).Displayed;
         }
     }
 }

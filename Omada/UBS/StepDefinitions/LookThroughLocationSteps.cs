@@ -4,13 +4,15 @@ using UBS.Pages;
 
 namespace UBS.StepDefinitions
 {
-    [Binding]
+    [Binding, Scope(Feature = "Look through location")]
     public class LookThroughLocationSteps : CommonSteps
     {
         [Given(@"Location page opened")]
         public void GivenLocationPageOpened()
         {
-            new HomePage(driver).ClickLocationsNavButton();
+            var homePage = new HomePage(driver);
+            homePage.ClickAgryToAllButton();
+            homePage.ClickLocationsNavButton();
         }
         
         [When(@"Header '(.*)' is displayed")]

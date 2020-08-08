@@ -5,12 +5,18 @@ using OpenQA.Selenium.Chrome;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 using System.Reflection;
+using OpenQA.Selenium.Support.UI;
+using System.Threading;
 
 namespace UBS.WebCore
 {
-    internal class Browser
+    public class Browser
     {
+        private const int waitElementTimeout = 10;
         public IWebDriver driver;
+
+        public Browser() { }
+        public Browser(IWebDriver driver) { this.driver = driver; }
 
         public void Start()
         {
@@ -31,7 +37,7 @@ namespace UBS.WebCore
 
             //browser launching and page opening
             StartBrowser(browserName);
-            goToPage(browserUrl);
+            GoToPage(browserUrl);
         }
 
         public void StartBrowser(string browser)
@@ -51,12 +57,44 @@ namespace UBS.WebCore
                 default:
                     throw new Exception("Browser was not initialized");
             }
-            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(5);
+            driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(waitElementTimeout);
         }
 
-        public void goToPage(string url)
+        public void GoToPage(string url)
         {
             driver.Navigate().GoToUrl(url);
+        }
+
+        public bool WaitForElementInvisible(By locator,
+            int seconds = waitElementTimeout)
+        {
+            var bResult = false;
+            try
+            {
+                var webElement = driver.FindElement(locator);
+                
+                if (webElement != null && webElement.Displayed)
+                {
+                    new WebDriverWait(driver, TimeSpan.FromSeconds(seconds)).Until(
+                        SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(locator));
+                }
+
+                bResult = true;
+            }
+            catch (NoSuchElementException)
+            {
+                bResult = true;
+            }
+            catch (Exception) { }
+
+            return bResult;
+        }
+
+        public void WaitForElementClickable(By locator,
+           int seconds = waitElementTimeout)
+        {
+            new WebDriverWait(driver, TimeSpan.FromSeconds(seconds)).Until(
+                SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(locator));
         }
     }
 }

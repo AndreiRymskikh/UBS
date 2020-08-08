@@ -1,8 +1,6 @@
 ﻿using OpenQA.Selenium;
-using OpenQA.Selenium.Support.Extensions;
 using OpenQA.Selenium.Support.UI;
 using System;
-using System.Linq;
 
 namespace UBS.Pages
 {
@@ -14,7 +12,16 @@ namespace UBS.Pages
 
         public bool IsMapDisplayed()
         {
-            return driver.FindElement(Map).Displayed;
+            try 
+            {
+                new WebDriverWait(driver, TimeSpan.FromSeconds(10)).Until(
+                SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(Map));
+                return true;
+            }
+            catch(Exception)
+            {
+                return false;
+            }
         }
     }
 }
