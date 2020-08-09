@@ -1,5 +1,6 @@
 ﻿using OpenQA.Selenium;
 using OpenQA.Selenium.Support.UI;
+using System;
 using System.Collections.ObjectModel;
 
 namespace UBS.Pages
@@ -27,12 +28,17 @@ namespace UBS.Pages
         {
             driver.FindElement(dropDown).Click();
             ReadOnlyCollection<IWebElement> options = driver.FindElements(item);
-            string text;
 
             foreach (IWebElement opt in options)
             {
-                text = opt.Text;
-                if (text == option)
+                try
+                {
+                    new WebDriverWait(driver, TimeSpan.FromSeconds(2))
+                    .Until(SeleniumExtras.WaitHelpers.ExpectedConditions.TextToBePresentInElement(opt, option));
+                }
+                catch { }               
+                
+                if (opt.Text == option)
                 {
                     opt.Click();
                     return;

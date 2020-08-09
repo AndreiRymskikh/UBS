@@ -5,8 +5,8 @@ namespace UBS.Pages
 {
     public class ContactUsPage : BasePage
     {
-        private By Mr => By.Id("Title_2");
-        private By Mrs => By.Id("Title_1");
+        private By Mr => By.XPath("//*[@id = 'Title_2']/following-sibling::label");
+        private By Mrs => By.Id("//*[@id = 'Title_1']/following-sibling::label");
         private By FirstNameField => By.Id("Firstname");
         private By LastNameField => By.Id("Lastname");
         private By AddressField => By.Id("Address");
@@ -25,6 +25,7 @@ namespace UBS.Pages
         {
             var userData = new GenerateData().UserData;
 
+            driver.SwitchTo().Frame(0);
             driver.FindElement(userData.Mr ? Mr : Mrs).Click();
             driver.FindElement(FirstNameField).SendKeys(userData.FirstName);
             driver.FindElement(LastNameField).SendKeys(userData.LastName);
