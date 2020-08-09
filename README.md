@@ -13,11 +13,9 @@ an info about company's service for some spetial regions)
 •Implement above in steps preferably using C# (Java or other alternatives are also acceptable) +
 •Make project configurable, so it is possible to run test suite for particular:
                                                  - language +
-						 
-						 Notes: Localization check added
+						Notes: Localization check added
                                                  - instance +
                                                  - user 
-						                                  
 						Notes: I don't see the possibility to use different users/user roles.
 						If this is about different test data for users to fill different forms,
 						so it was implemented.
