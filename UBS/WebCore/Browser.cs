@@ -41,17 +41,19 @@ namespace UBS.WebCore
 
         public void StartBrowser(string browser)
         {
+            var path = Path.GetDirectoryName(
+                    Assembly.GetExecutingAssembly().GetName().CodeBase)?.Replace("file:\\", "");
             switch (browser)
             {
                 case "Firefox":
-                    driver = new OpenQA.Selenium.Firefox.FirefoxDriver();
+                    driver = new OpenQA.Selenium.Firefox.FirefoxDriver(path);
                     driver.Manage().Window.Size = new Size(1920, 1080);
                     break;
                 case "Chorme":
                     ChromeOptions optionsCh = new ChromeOptions();
                     optionsCh.AddArguments("--start-maximized");
                     optionsCh.AddArgument("-no-sandbox");
-                    driver = new ChromeDriver("C:\\Tools", optionsCh, TimeSpan.FromMinutes(2));
+                    driver = new ChromeDriver(path, optionsCh, TimeSpan.FromMinutes(2));
                     break;
                 default:
                     throw new Exception("Browser was not initialized");
