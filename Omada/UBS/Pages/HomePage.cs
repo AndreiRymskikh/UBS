@@ -1,4 +1,6 @@
 ﻿using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
+using System;
 using UBS.WebCore;
 
 namespace UBS.Pages
@@ -8,6 +10,7 @@ namespace UBS.Pages
         private By LocationsNavButton => By.XPath("//ul[@id = 'metanavigation']//a[contains(text(), 'Locations')]");
         private By AgreeToAllButton => By.XPath("//button//*[text() = 'Agree to all']");
         private By SelectDomicileButton => By.CssSelector("#domicileButton");
+        private By LocalizationButton => By.XPath("//li[contains(@class, 'language')]/a");
         private By Title(string text) => By.XPath($"//div[@class = 'header__title']//span[text() = '{text}']");
         public By RegionDropDown => By.XPath("//ul[contains(@class, 'list--region')]/preceding-sibling::button");
         public By RegionItem => By.XPath("//ul[contains(@class, 'list--region')]/li");
@@ -52,9 +55,22 @@ namespace UBS.Pages
             SelectValueFromDropDown(navItem, NavDropDown(navButton), NavItem(navItem));
         }
 
+        public void ClickLocalizationButton(string language)
+        {
+            var element = driver.FindElement(LocalizationButton);
+            element.Click();
+            new Browser(driver).WaitForElementInvisible(
+                By.XPath($"//li[contains(@class, 'language')]/a[li[contains(text(), '{language}')]"));
+        }
+
         public bool IsTitleDisplayed(string text)
         {
             return driver.FindElement(Title(text)).Displayed;
+        }
+
+        public bool IsNavDropDownDisplayed(string text)
+        {
+            return driver.FindElement(NavDropDown(text)).Displayed;
         }
     }
 }
